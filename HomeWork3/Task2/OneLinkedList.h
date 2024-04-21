@@ -1,7 +1,7 @@
 #ifndef ONELINKEDLIST_H_INCLUDED
 #define ONELINKEDLIST_H_INCLUDED
 
-// Определение узла для односвязного списка.
+
 template <typename T>
 class Node {
 public:
@@ -12,29 +12,25 @@ public:
     Node (T data) : data(data), next(nullptr) {}
 };
 
-// Итератор для навигации по односвязному списку.
+
 template <typename T>
 class Iterator {
 public:
-    Node<T>* current; // Текущий узел итератора.
+    Node<T>* current;
 
-    // Конструктор, инициализирующий итератор с указанным узлом.
     Iterator(Node<T>* node) : current(node) {}
 
-    // Оператор разыменования возвращает ссылку на данные текущего узла.
     T& operator*() {
         if (current == nullptr) { throw std::runtime_error("DoesNotSupportError: Attempt to dereference(*) end() iterator");}
         return current->data;
     }
 
-    // Префиксный инкремент переводит итератор на следующий узел.
     Iterator& operator++() {
         if (current == nullptr) { throw std::runtime_error("DoesNotSupportError: Attempt to increase(++) end() iterator"); }
         current = current->next;
         return *this;
     }
 
-    // Постфиксный инкремент сначала возвращает текущее состояние итератора, затем переводит его на следующий узел.
     Iterator operator++(T) {
         if (current == nullptr) { throw std::runtime_error("DoesNotSupportError: Attempt to increase(++) end() iterator"); }
         Iterator temp = *this;
@@ -42,13 +38,11 @@ public:
         return temp;
     }
 
-    // Оператор доступа к члену класса через указатель.
     Node<T>* operator->() {
         if (current == nullptr) { throw std::runtime_error("DoesNotSupportError: Attempt to (->) end() iterator"); }
         return current;
     }
 
-    // Операторы сравнения итераторов.
     bool operator!=(const Iterator& other) {
         return current != other.current;
     }
@@ -57,24 +51,19 @@ public:
     }
 };
 
-// Основной класс односвязного списка.
+
 template <typename T>
 class OneLinkedList {
 private:
-    Node<T>* head; // Указатель на начало списка.
-    Node<T>* tail; // Указатель на конец списка.
+    Node<T>* head;
+    Node<T>* tail;
 
 public:
-    // Конструктор, инициализирующий пустой список.
     OneLinkedList() { this->head = this->tail = nullptr; }
-
-    // Деструктор, удаляющий все узлы списка.
     ~OneLinkedList() { while (head != nullptr) pop_front(); }
 
-    // Проверка списка на пустоту.
     bool empty() { return head == nullptr; }
 
-    // Удаление первого элемента списка.
     void pop_front()
     {
         if (empty()) return;
@@ -91,7 +80,6 @@ public:
         return;
     }
 
-    // Добавление элемента в конец списка.
     void push_back(T data)
     {
         Node<T>* node = new Node<T>(data);
@@ -100,7 +88,6 @@ public:
         tail = node;
     }
 
-    // Добавление элемента в начало списка.
     void push_front(T data)
     {
         Node<T>* node = new Node<T>(data);
@@ -109,7 +96,6 @@ public:
         if (tail == nullptr) { tail = node; }
     }
 
-    // Удаление последнего элемента списка.
     void pop_back()
     {
         if (tail == nullptr) { return; }
@@ -133,7 +119,6 @@ public:
         }
     }
 
-    // Вставка элемента после указанного итератора.
     void insert_after(Iterator<T>& pos, const T data) {
         if (pos.current == nullptr) { throw std::runtime_error("OperationDoesNotSupportError: Attempt to dereference end() iterator");}
 
@@ -147,7 +132,6 @@ public:
         }
     }
 
-    // Удаление элемента после указанного итератора.
     void erase_after(Iterator<T>& pos) {
         if (pos.current == nullptr) { throw std::runtime_error("OperationDoesNotSupportError: Attempt to dereference end() iterator");}
 
@@ -165,13 +149,11 @@ public:
         pos->next = new_right;
     };
 
-    // Получение ссылки на первый элемент списка.
     T& front() {
         if (empty()) { throw std::runtime_error("EmptyListError: Attempt to access front on empty list");}
         return head->data;
     }
 
-    // Удаление всех элементов, равных заданному значению.
     void remove(const T& data)
     {
         Node<T>* node = head;
@@ -193,22 +175,19 @@ public:
             }
         }
 
-        tail = node; // Обновление указателя на последний узел
+        tail = node;
     }
 
-    // Возвращает итератор, указывающий на начало списка.
     Iterator<T> begin()
     {
         return Iterator<T>(head);
     }
 
-    // Возвращает итератор, указывающий на конец списка.
     Iterator<T> end()
     {
         return Iterator<T>(nullptr);
     }
 
-    // Поиск элемента в списке и возвращение итератора на него.
     Iterator<T> find(T data)
     {
         Iterator<T> it = begin();
@@ -219,4 +198,4 @@ public:
     }
 };
 
-#endif // ONELINKEDLIST_H_INCLUDED
+#endif
