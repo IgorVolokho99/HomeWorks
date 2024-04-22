@@ -31,7 +31,7 @@ public:
         return *this;
     }
 
-    Iterator operator++(T) {
+    Iterator operator++(int) {
         if (current == nullptr) { throw std::runtime_error("DoesNotSupportError: Attempt to increase(++) end() iterator"); }
         Iterator temp = *this;
         current = current->next;
